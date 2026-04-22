@@ -4,7 +4,7 @@
 
 ## Live
 
-**[Открыть дашборд →](https://dxripunov.github.io/azerbaijan-pet-industry/)**
+**[Открыть дашборд →](https://dvdgldmn.github.io/azerbaijan-pet-industry/)**
 
 ## Данные
 
