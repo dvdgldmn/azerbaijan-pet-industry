@@ -94,6 +94,7 @@ a:hover{text-decoration:underline}
   <div class="map-controls">
     <div class="row">
       <span class="lbl">Категории:</span>
+      <span class="chip on" data-cat="all">Все <span class="n">293</span></span>
       <span class="chip on" data-cat="vet"><i style="background:#dc2626"></i>Ветклиники <span class="n">106</span></span>
       <span class="chip on" data-cat="pet"><i style="background:#2563eb"></i>Зоомагазины <span class="n">165</span></span>
       <span class="chip on" data-cat="groom"><i style="background:#7c3aed"></i>Груминг <span class="n">21</span></span>
@@ -107,7 +108,7 @@ a:hover{text-decoration:underline}
     </div>
   </div>
   <div id="map"></div>
-  <div class="note">Клик по сети — показать только её (solo). Клик по «Все» или повторный клик — вернуть все. Категории работают как обычный toggle.</div>
+  <div class="note">Клик по чипу — показать только его (solo). Клик по «Все» или повторный клик — вернуть всё.</div>
 </section>
 
 <section class="grid cols-2" style="margin-bottom:16px">
@@ -661,15 +662,30 @@ function renderMarkers() {
   });
 }
 
+function setAllCatsOn() {
+  filterState.cats = new Set(['vet','pet','groom','shelter']);
+  document.querySelectorAll('.chip[data-cat]').forEach(b => {
+    b.classList.add('on'); b.classList.remove('off');
+  });
+}
+
+function setSoloCat(key) {
+  filterState.cats = new Set([key]);
+  document.querySelectorAll('.chip[data-cat]').forEach(b => {
+    if (b.dataset.cat === key) { b.classList.add('on'); b.classList.remove('off'); }
+    else                        { b.classList.add('off'); b.classList.remove('on'); }
+  });
+}
+
 document.querySelectorAll('.chip[data-cat]').forEach(chip => {
   chip.addEventListener('click', () => {
     const cat = chip.dataset.cat;
-    if (filterState.cats.has(cat)) {
-      filterState.cats.delete(cat);
-      chip.classList.add('off'); chip.classList.remove('on');
+    if (cat === 'all') {
+      setAllCatsOn();
     } else {
-      filterState.cats.add(cat);
-      chip.classList.add('on'); chip.classList.remove('off');
+      const isSolo = filterState.cats.size === 1 && filterState.cats.has(cat);
+      if (isSolo) setAllCatsOn();
+      else        setSoloCat(cat);
     }
     renderMarkers();
   });
