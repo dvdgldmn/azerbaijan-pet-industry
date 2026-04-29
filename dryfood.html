@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Сухой корм для собак — рынок Азербайджана</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f6f7fb;--card:#fff;--ink:#1a1f2c;--muted:#5b6478;--line:#e6e8ef;
+  --accent:#2563eb;--accent-soft:#dbeafe;--green:#16a34a;--amber:#d97706;
+  --red:#dc2626;--violet:#7c3aed;--teal:#0d9488;--pink:#ec4899;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.5}
+.wrap{max-width:1500px;margin:0 auto;padding:28px 22px 70px}
+.topnav{display:flex;gap:6px;margin-bottom:20px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.topnav a{padding:7px 14px;border-radius:8px;color:var(--muted);font-weight:600;font-size:13.5px;text-decoration:none;transition:all .15s}
+.topnav a:hover{background:#eef2f7;color:var(--ink)}
+.topnav a.active{background:var(--ink);color:#fff}
+header{margin-bottom:22px}
+header h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-0.01em}
+header .sub{color:var(--muted);font-size:14px;margin-top:4px}
+header .meta{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}
+header .meta strong{color:var(--ink)}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(4,1fr)}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:2fr 1fr 1fr}
+@media (max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.cols-2,.cols-3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.card h3{margin:0 0 4px;font-size:12px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.card h2{margin:0 0 12px;font-size:16px;font-weight:700}
+.kpi .value{font-size:32px;font-weight:700;letter-spacing:-0.02em;margin:2px 0}
+.kpi .hint{color:var(--muted);font-size:12.5px}
+.kpi .pill{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;margin-top:4px}
+.chart-box{position:relative;height:280px}
+.chart-box.tall{height:360px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:8px 7px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:none}
+.tag{display:inline-block;border-radius:5px;padding:1px 7px;font-size:10.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.tag-eco{background:#fef3c7;color:#92400e}
+.tag-chem{background:#fee2e2;color:#991b1b}
+.tag-qeco{background:#fef9c3;color:#854d0e}
+.tag-mid{background:#dbeafe;color:#1d4ed8}
+.tag-prem{background:#ede9fe;color:#6d28d9}
+.tag-super{background:#dcfce7;color:#166534}
+.tag-ultra{background:#fce7f3;color:#9f1239}
+.tag-vet{background:#e0f2fe;color:#075985}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+.tier-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:900px){.tier-grid{grid-template-columns:1fr}}
+.tier-block{border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.tier-block .label{font-size:10.5px;font-weight:700;letter-spacing:.05em}
+.tier-block h4{margin:3px 0 8px;font-size:13.5px;font-weight:600}
+.tier-block table{margin-top:4px}
+.tier-block .note{margin-top:8px}
+.axes-7{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media (max-width:1100px){.axes-7{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.axes-7{grid-template-columns:1fr}}
+.axis{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:#fafbff}
+.axis .n{font-size:10.5px;color:var(--accent);font-weight:700;letter-spacing:.05em}
+.axis h4{margin:4px 0 8px;font-size:13.5px}
+.axis ul{margin:0;padding-left:18px;color:var(--muted);font-size:12.5px}
+.axis ul li{margin-bottom:2px}
+.channel-matrix td.y{text-align:center;color:var(--green);font-weight:700}
+.channel-matrix td.n{text-align:center;color:var(--red)}
+.channel-matrix td.p{text-align:center;color:var(--amber)}
+ul{margin:4px 0 4px 18px}
+li{margin:2px 0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="topnav">
+  <a href="index.html">Зоо-индустрия</a>
+  <a href="dryfood.html" class="active">Сухие корма</a>
+</nav>
+
+<header>
+  <h1>Сухой корм для собак · рынок Азербайджана</h1>
+  <div class="sub">Ассортимент, бренды по ценовым тирам, форматы упаковок, каналы дистрибуции. Открытое исследование на основе публичных каталогов.</div>
+  <div class="meta">
+    <span>Snapshot: <strong>2026-04-29</strong></span>
+    <span>Брендов: <strong>~40</strong></span>
+    <span>Ценовых классов: <strong>7</strong></span>
+    <span>Каталогов изучено: <strong>5</strong></span>
+  </div>
+</header>
+
+<section class="grid kpis" style="margin-bottom:16px">
+  <div class="card kpi"><h3>Брендов на рынке</h3><div class="value">~40</div><div class="hint">по 7 ценовым классам</div><span class="pill">диверсифицированный</span></div>
+  <div class="card kpi"><h3>Ценовой диапазон</h3><div class="value">2.6 – 55</div><div class="hint">AZN/кг retail</div><span class="pill" style="background:#dcfce7;color:#166534">от sub-eco до ultra</span></div>
+  <div class="card kpi"><h3>Локальных производств</h3><div class="value">0</div><div class="hint">100% импорт</div><span class="pill" style="background:#fee2e2;color:#991b1b">валютный риск</span></div>
+  <div class="card kpi"><h3>Концентрация спроса</h3><div class="value">70–80%</div><div class="hint">Баку + Абшерон</div><span class="pill">по объёму</span></div>
+</section>
+
+<section class="grid cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <h2>Ценовые тиры — доли рынка (оценка)</h2>
+    <div class="chart-box"><canvas id="priceShare"></canvas></div>
+    <div class="note">Доли экспертные. Economy доминирует по объёму; premium + super-premium — по стоимости.</div>
+  </div>
+  <div class="card">
+    <h2>Диапазон цен по тирам (AZN/кг)</h2>
+    <div class="chart-box"><canvas id="priceRange"></canvas></div>
+    <div class="note">Sub-economy (2.6–3.5) — chemical feed (2–5% мяса); Quality Economy (4–6) — реальная еда. Это разные продуктовые классы.</div>
+  </div>
+</section>
+
+<section class="grid cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <h2>Страны происхождения брендов</h2>
+    <div class="chart-box"><canvas id="origin"></canvas></div>
+    <div class="note">Италия и Германия доминируют в premium/super-premium; Турция — в sub-eco; Чехия + Канада — в holistic.</div>
+  </div>
+  <div class="card">
+    <h2>Протеины — представленность в ассортименте</h2>
+    <div class="chart-box"><canvas id="proteins"></canvas></div>
+    <div class="note">Курица — базовый протеин во всех тирах. Утка, оленина, кабан — маркеры super-premium и выше.</div>
+  </div>
+</section>
+
+<section class="card" style="margin-bottom:16px">
+  <h2>Бренды по ценовым тирам</h2>
+  <table>
+    <thead>
+      <tr><th style="width:170px">Тир</th><th style="width:120px">AZN/кг</th><th>Бренды</th><th style="width:180px">Происхождение</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="tag tag-chem">Sub-economy</span></td><td>2.5 – 3.5</td><td>Winny, Franky, Mystic, How Meow, Peteko, Skippy, Simpo, Chappi</td><td>Турция, СНГ, Mars (global)</td></tr>
+      <tr><td><span class="tag tag-qeco">Quality Economy</span></td><td>4.0 – 6.0</td><td>Pedigree, Darling, Econature Plus, New Dog, ProStar, Golden Can/Ortin, ProBalance, O.L.KAR., TopLine</td><td>Mars, Nestlé, Россия, Украина, импорт</td></tr>
+      <tr><td><span class="tag tag-mid">Mid-range</span></td><td>8.0 – 15.0</td><td>Reflex Plus, Gemon, LaVital, Джерри, Happy Dog (базовые), Morando, Club 4 Paws, Fitmin, Josera</td><td>Турция, Италия, Германия, Чехия, Украина, Россия</td></tr>
+      <tr><td><span class="tag tag-prem">Premium</span></td><td>13.0 – 24.0</td><td>Royal Canin, Pro Plan, Monge, Happy Dog (спец. линейки)</td><td>Франция (Mars), США (Nestlé), Италия, Германия</td></tr>
+      <tr><td><span class="tag tag-super">Super-Premium / Holistic</span></td><td>24.0 – 35.0</td><td>Grandorf, Monge BWild Grain Free, Brit Care, Carnilove, Alleva, Nature's Protection, Animonda, Acana</td><td>Бельгия, Италия, Чехия, Литва, Германия, Канада</td></tr>
+      <tr><td><span class="tag tag-ultra">Ultra-Premium</span></td><td>35.0 – 55.0</td><td>Orijen</td><td>Канада (Champion Petfoods)</td></tr>
+      <tr><td><span class="tag tag-vet">Veterinary / Rx</span></td><td>30.0 – 50.0+</td><td>Royal Canin Vet Diet, Pro Plan Veterinary Diets, Monge Vetsolution</td><td>Франция, США, Италия</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="card" style="margin-bottom:16px">
+  <h2>Детальный список брендов по каждому тиру</h2>
+  <div class="tier-grid">
+
+    <div class="tier-block" style="background:#fef2f2;border-color:#fecaca">
+      <div class="label" style="color:#991b1b">SUB-ECONOMY · 8 брендов · 2.5–3.5 AZN/кг · ~20–25% объёма</div>
+      <h4>Chemical feed</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Winny</td><td>Турция</td><td style="text-align:right">2.6</td></tr>
+          <tr><td>Franky</td><td>Турция</td><td style="text-align:right">2.75</td></tr>
+          <tr><td>Mystic</td><td>Турция</td><td style="text-align:right">~3.0</td></tr>
+          <tr><td>How Meow</td><td>Турция</td><td style="text-align:right">~3.5</td></tr>
+          <tr><td>Peteko</td><td>Турция</td><td style="text-align:right">~3.5</td></tr>
+          <tr><td>Skippy</td><td>Турция/СНГ</td><td style="text-align:right">~3.5</td></tr>
+          <tr><td>Simpo</td><td>Турция/СНГ</td><td style="text-align:right">~3.5</td></tr>
+          <tr><td>Chappi</td><td>Mars (global)</td><td style="text-align:right">~3.5</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Себестоимость ~1.0–1.2 AZN/кг. Доля реального мяса 2–5%. Остальное — зерновой балласт, мясокостная мука низкого качества, соевый шрот, химические ароматизаторы. Сравнивать с реальным кормом по цене за кг методологически некорректно.</div>
+    </div>
+
+    <div class="tier-block" style="background:#fffbeb;border-color:#fde68a">
+      <div class="label" style="color:#854d0e">QUALITY ECONOMY · 9 брендов · 4.0–6.0 AZN/кг · ~15–20% объёма</div>
+      <h4>Реальная еда базового уровня</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Darling</td><td>Nestlé (RU)</td><td style="text-align:right">3.9</td></tr>
+          <tr><td>Pedigree</td><td>Mars (global)</td><td style="text-align:right">~4.0</td></tr>
+          <tr><td>Econature Plus</td><td>импорт</td><td style="text-align:right">~4.0</td></tr>
+          <tr><td>New Dog</td><td>private/импорт</td><td style="text-align:right">~4.0</td></tr>
+          <tr><td>ProStar</td><td>private/импорт</td><td style="text-align:right">~4.0</td></tr>
+          <tr><td>Golden Can / Ortin</td><td>private/импорт</td><td style="text-align:right">~4.5</td></tr>
+          <tr><td>ProBalance</td><td>Россия</td><td style="text-align:right">~4.5</td></tr>
+          <tr><td>O.L.KAR.</td><td>Украина</td><td style="text-align:right">~4.5</td></tr>
+          <tr><td>TopLine</td><td>импорт</td><td style="text-align:right">~5.0</td></tr>
+        </tbody>
+      </table>
+      <div class="note">15–25% реального мяса, базовые витамины. Доступны в сетях Biopet, Sevimliler, в Birmarket. Это нижняя граница категории "real food".</div>
+    </div>
+
+    <div class="tier-block" style="background:#eff6ff;border-color:#bfdbfe">
+      <div class="label" style="color:#1d4ed8">MID-RANGE · 9 брендов · 8.0–15.0 AZN/кг · ~20% объёма</div>
+      <h4>Европейские базовые линейки</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Reflex Plus</td><td>Турция (Lider)</td><td style="text-align:right">~8</td></tr>
+          <tr><td>Gemon</td><td>Италия (Monge)</td><td style="text-align:right">~9</td></tr>
+          <tr><td>LaVital</td><td>импорт</td><td style="text-align:right">~9</td></tr>
+          <tr><td>Джерри (JJ)</td><td>Россия</td><td style="text-align:right">~9</td></tr>
+          <tr><td>Happy Dog (базовые)</td><td>Германия</td><td style="text-align:right">~10</td></tr>
+          <tr><td>Morando</td><td>Италия</td><td style="text-align:right">~10</td></tr>
+          <tr><td>Club 4 Paws</td><td>Украина (EVA)</td><td style="text-align:right">~10</td></tr>
+          <tr><td>Fitmin</td><td>Чехия</td><td style="text-align:right">~11</td></tr>
+          <tr><td>Josera (JosiDog)</td><td>Германия</td><td style="text-align:right">~12</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Германия + Италия = 4 из 9. Gemon и Fitmin — мост к premium. Канал — Birmarket + специализированные pet-shops.</div>
+    </div>
+
+    <div class="tier-block" style="background:#f5f3ff;border-color:#ddd6fe">
+      <div class="label" style="color:#6d28d9">PREMIUM · 4 бренда · 13.0–24.0 AZN/кг · ~22% стоимости</div>
+      <h4>Международные премиум-марки</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:80px;text-align:center">Мясо</th><th style="width:90px;text-align:right">AZN/кг</th></tr></thead>
+        <tbody>
+          <tr><td>Royal Canin (Birmarket entry)</td><td style="text-align:center">~22%</td><td style="text-align:right">12.33</td></tr>
+          <tr><td>Monge (Birmarket entry)</td><td style="text-align:center">~24%</td><td style="text-align:right">13.00</td></tr>
+          <tr><td>Monge (pet-shop)</td><td style="text-align:center">~24%</td><td style="text-align:right">15–19</td></tr>
+          <tr><td>Royal Canin (pet-shop)</td><td style="text-align:center">~22%</td><td style="text-align:right">15–19</td></tr>
+          <tr><td>Pro Plan</td><td style="text-align:center">~23%</td><td style="text-align:right">16–20</td></tr>
+          <tr><td>Happy Dog (спец. линейки)</td><td style="text-align:center">~23%</td><td style="text-align:right">16–22</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Расхождение pet-shop vs Birmarket entry — 15–35%. Birmarket держит entry SKU как loss leader для трафика; полный ассортимент — в Biopet, Sevimliler, Zoomir.</div>
+    </div>
+
+    <div class="tier-block" style="background:#ecfdf5;border-color:#bbf7d0">
+      <div class="label" style="color:#166534">SUPER-PREMIUM / HOLISTIC · 8 брендов · 24–35 AZN/кг · ~11% стоимости</div>
+      <h4>Рост 10–15% г/г</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Grandorf</td><td>Бельгия / NL</td><td style="text-align:right">~28</td></tr>
+          <tr><td>Monge BWild Grain Free</td><td>Италия</td><td style="text-align:right">18.8–27</td></tr>
+          <tr><td>Brit Care</td><td>Чехия</td><td style="text-align:right">~26</td></tr>
+          <tr><td>Carnilove</td><td>Чехия</td><td style="text-align:right">~29</td></tr>
+          <tr><td>Alleva</td><td>Италия</td><td style="text-align:right">~30</td></tr>
+          <tr><td>Nature's Protection</td><td>Литва</td><td style="text-align:right">13.5–26</td></tr>
+          <tr><td>Animonda</td><td>Германия</td><td style="text-align:right">~27</td></tr>
+          <tr><td>Acana</td><td>Канада</td><td style="text-align:right">~30</td></tr>
+        </tbody>
+      </table>
+      <div class="note">На маркетплейсах слабо представлены. Канал — специализированные pet-shops (Biopet, Zoomir, Sevimliler). Чехия (Brit/Carnilove) — сильное европейское ядро.</div>
+    </div>
+
+    <div class="tier-block" style="background:#fdf2f8;border-color:#f9a8d4">
+      <div class="label" style="color:#9f1239">ULTRA-PREMIUM · 1 бренд · 35–55 AZN/кг · ~2–3%</div>
+      <h4>Биологически адекватный / high-protein</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Orijen</td><td>Канада (Champion)</td><td style="text-align:right">~40–50</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Флагман biologically appropriate. Нет: Farmina N&D, Taste of the Wild, Wellness Core, Applaws, Eukanuba Premium — потенциальные точки входа.</div>
+    </div>
+
+    <div class="tier-block" style="background:#ecfeff;border-color:#a5f3fc">
+      <div class="label" style="color:#075985">VETERINARY / Rx · 3 суб-бренда · 30–50+ AZN/кг · ~5%</div>
+      <h4>Канал = ветклиники</h4>
+      <table>
+        <thead><tr><th>Бренд</th><th style="width:120px">Происхождение</th><th style="width:80px;text-align:right">AZN/кг*</th></tr></thead>
+        <tbody>
+          <tr><td>Royal Canin Vet Diet</td><td>Франция (Mars)</td><td style="text-align:right">~35–45</td></tr>
+          <tr><td>Pro Plan Veterinary Diets</td><td>США (Nestlé)</td><td style="text-align:right">~35–45</td></tr>
+          <tr><td>Monge Vetsolution</td><td>Италия</td><td style="text-align:right">~30–40</td></tr>
+        </tbody>
+      </table>
+      <div class="note">Все три — суб-линейки уже представленных Premium игроков. Закрытый канал через клиники + эксклюзивный дистрибьютор Biota. Hill's Prescription Diet в AZ не подтверждён в публичных каталогах.</div>
+    </div>
+
+    <div class="tier-block" style="background:#f0f9ff;border-color:#bae6fd">
+      <div class="label" style="color:#075985">КАТАЛОГ И ЗАМЕТКИ</div>
+      <h4>Источники цен</h4>
+      <ul style="margin:6px 0 0 18px;color:var(--muted);font-size:12.5px">
+        <li><a href="https://biopet.az/az" target="_blank">Biopet.az</a> — 50+ брендов, основной retail-каталог</li>
+        <li><a href="https://birmarket.az/ru/categories/2167-suhie-korma-dlya-sobak" target="_blank">Birmarket.az</a> — 200+ SKU, прайс-лист онлайн</li>
+        <li><a href="https://zoomir.az/en/catalogue/category/for-dog/dry-dog-food_3/" target="_blank">Zoomir.az</a></li>
+        <li><a href="https://zoodrug.az" target="_blank">Zoodrug.az</a></li>
+        <li><a href="https://zoomagazin.az/" target="_blank">Zoomagazin.az</a></li>
+        <li><a href="https://zoosevimliler.az/" target="_blank">Zoosevimliler.az</a> — сеть с 1999</li>
+      </ul>
+      <div class="note">* AZN/кг — ориентир по базовым SKU среднего веса. Расхождение 15–40% между маркетплейсами и pet-shops — типичная картина.</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="grid cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <h2>Покрытие функциональных линеек по тирам</h2>
+    <table>
+      <thead>
+        <tr><th>Линейка</th><th style="text-align:center">Eco</th><th style="text-align:center">Mid</th><th style="text-align:center">Prem</th><th style="text-align:center">Super</th><th style="text-align:center">Ultra</th><th style="text-align:center">Rx</th></tr>
+      </thead>
+      <tbody class="channel-matrix">
+        <tr><td>Puppy / Junior</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Adult</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Senior 7+</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Breed-specific</td><td class="n">✗</td><td class="n">✗</td><td class="p">RC, Happy Dog</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td></tr>
+        <tr><td>Sensitive / GI</td><td class="n">✗</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>Hypoallergenic / LID</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Sterilised / weight</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>Urinary</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>Joint / mobility</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="p">част.</td><td class="n">✗</td><td class="y">✓</td></tr>
+        <tr><td>Grain-free</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="y">ядро</td><td class="y">✓</td><td class="n">✗</td></tr>
+        <tr><td>High-protein</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">ядро</td><td class="n">✗</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Senior, Urinary, Joint вне Rx — структурные пробелы рынка. Breed-specific — почти монополия Royal Canin.</div>
+  </div>
+
+  <div class="card">
+    <h2>Форматы упаковки — доступность по тирам</h2>
+    <table>
+      <thead>
+        <tr><th>Формат</th><th style="text-align:center">Eco</th><th style="text-align:center">Mid</th><th style="text-align:center">Prem</th><th style="text-align:center">Super</th><th style="text-align:center">Ultra</th></tr>
+      </thead>
+      <tbody class="channel-matrix">
+        <tr><td><strong>На развес</strong> (локальная особенность)</td><td class="y">✓</td><td class="y">✓</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td></tr>
+        <tr><td>Малый 1–3 кг</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Стандарт 10–15 кг</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="p">част.</td></tr>
+        <tr><td>Большой 20 кг</td><td class="y">ядро</td><td class="p">част.</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td></tr>
+      </tbody>
+    </table>
+    <div class="note" style="margin-top:14px">
+      <strong>Наблюдение:</strong> economy оптимизирует price-per-kg через 20 кг и развес. Super-premium / ultra работают только в фасованных пакетах — holistic-бренды не допускают развес (риск для позиционирования и срока хранения).
+    </div>
+
+    <h2 style="margin:18px 0 10px">Профиль протеинов по тирам</h2>
+    <table>
+      <thead>
+        <tr><th>Протеин</th><th style="text-align:center">Eco</th><th style="text-align:center">Mid</th><th style="text-align:center">Prem</th><th style="text-align:center">Super</th><th style="text-align:center">Ultra</th></tr>
+      </thead>
+      <tbody class="channel-matrix">
+        <tr><td>Курица</td><td class="y">ядро</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Говядина</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Ягнёнок</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Лосось / рыба</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Индейка</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Утка</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td></tr>
+        <tr><td>Оленина / кабан</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">маркер</td><td class="y">✓</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Курица — универсальный базовый протеин. Утка / оленина — явные маркеры super-premium и выше.</div>
+  </div>
+</section>
+
+<section class="card" style="margin-bottom:16px">
+  <h2>Каналы дистрибуции — где какой тир доступен</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Канал</th>
+        <th style="text-align:center">Sub-eco</th>
+        <th style="text-align:center">Q.Eco</th>
+        <th style="text-align:center">Mid</th>
+        <th style="text-align:center">Premium</th>
+        <th style="text-align:center">Super-Prem</th>
+        <th style="text-align:center">Ultra</th>
+        <th style="text-align:center">Rx</th>
+        <th>Примечания</th>
+      </tr>
+    </thead>
+    <tbody class="channel-matrix">
+      <tr>
+        <td><a href="https://birmarket.az/ru/categories/2167-suhie-korma-dlya-sobak" target="_blank">Birmarket.az</a> (PASHA Holding)</td>
+        <td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">entry</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td>
+        <td>Маркетплейс. Premium только entry SKU как loss-leader. 200+ SKU, доставка по Баку.</td>
+      </tr>
+      <tr>
+        <td><a href="https://biopet.az/az" target="_blank">Biopet.az</a> (7 точек)</td>
+        <td class="n">✗</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="p">част.</td><td class="n">✗</td>
+        <td>Главный non-vet канал premium и выше. 50+ брендов. Mobile app.</td>
+      </tr>
+      <tr>
+        <td><a href="https://zoosevimliler.az/" target="_blank">Zoo Sevimliler</a> (4 точки)</td>
+        <td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="n">✗</td><td class="n">✗</td>
+        <td>Сеть с 1999. Wolt + Birmarket интеграция, доставка по Баку.</td>
+      </tr>
+      <tr>
+        <td>Royal Canin Petshop (3 точки)</td>
+        <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="y">✓</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td>
+        <td>Брендовые точки — только Royal Canin (включая Vet Diet линейку).</td>
+      </tr>
+      <tr>
+        <td>Zoomir / Zoodrug / Zoomagazin №1</td>
+        <td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="p">част.</td><td class="n">✗</td>
+        <td>Независимые pet-shops. Полный ассортимент включая holistic.</td>
+      </tr>
+      <tr>
+        <td><a href="https://wolt.com/en/aze/baku" target="_blank">Wolt</a> (delivery)</td>
+        <td class="n">✗</td><td class="p">част.</td><td class="y">✓</td><td class="y">✓</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td>
+        <td>Подключены избранные pet-shops (Sevimliler İçəri Şəhər и др.). 30–60 мин доставка.</td>
+      </tr>
+      <tr>
+        <td>Базары / yem dükanı (~18 точек)</td>
+        <td class="y">ядро</td><td class="p">част.</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="n">✗</td>
+        <td>8KM Topdan Bazar, Şərq bazarı. Развес, Sub-economy + базовый Quality Eco. B2B-канал.</td>
+      </tr>
+      <tr>
+        <td>Ветклиники (~106)</td>
+        <td class="n">✗</td><td class="n">✗</td><td class="n">✗</td><td class="p">част.</td><td class="p">част.</td><td class="n">✗</td><td class="y">эксклюзив</td>
+        <td>Rx-канал. Bayer Royal Canin Clinic + общие ветклиники с витриной премиум. Биота — эксклюзивный дистрибьютор Vet Diet.</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="note" style="margin-top:10px">
+    <strong>Как читать матрицу:</strong> зелёный «ядро» — основной поток канала; «✓» — товар реально продаётся; «част.» — нерегулярно или только entry SKU; красный «✗» — не продаётся. Связь с конкретными точками на карте — на странице <a href="index.html">Зоо-индустрия</a> (фильтр по сетям).
+  </div>
+</section>
+
+<section class="grid cols-2" style="margin-bottom:16px">
+  <div class="card">
+    <h2>Реальные SKU — ценовые ориентиры (апрель 2026)</h2>
+    <table>
+      <thead>
+        <tr><th>Бренд / SKU</th><th>Тир</th><th>Протеин</th><th style="width:65px">Вес</th><th style="width:80px;text-align:right">Цена</th><th style="width:80px;text-align:right">AZN/кг</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Winny Adult</td><td><span class="tag tag-chem">Sub-eco</span></td><td>Курица</td><td>20 кг</td><td style="text-align:right">52</td><td style="text-align:right"><strong>2.60</strong></td></tr>
+        <tr><td>Franky Adult</td><td><span class="tag tag-chem">Sub-eco</span></td><td>Курица</td><td>20 кг</td><td style="text-align:right">55</td><td style="text-align:right"><strong>2.75</strong></td></tr>
+        <tr><td>Winny Adult Chicken (малый)</td><td><span class="tag tag-chem">Sub-eco</span></td><td>Курица</td><td>2 кг</td><td style="text-align:right">6.40</td><td style="text-align:right">3.20</td></tr>
+        <tr><td>Darling Meat &amp; Vegetables</td><td><span class="tag tag-qeco">Q.Eco</span></td><td>Мясо + овощи</td><td>15 кг</td><td style="text-align:right">59</td><td style="text-align:right">3.93</td></tr>
+        <tr><td>Gemon All Breeds</td><td><span class="tag tag-mid">Mid</span></td><td>Ягнёнок + рис</td><td>1 кг</td><td style="text-align:right">6.50</td><td style="text-align:right">6.50</td></tr>
+        <tr><td>Happy Dog Chicken (small)</td><td><span class="tag tag-mid">Mid</span></td><td>Курица</td><td>1 кг</td><td style="text-align:right">23</td><td style="text-align:right">23.00</td></tr>
+        <tr><td>Monge Puppy &amp; Junior</td><td><span class="tag tag-prem">Premium</span></td><td>Ягнёнок + рис (puppy)</td><td>15 кг</td><td style="text-align:right">175</td><td style="text-align:right"><strong>11.67</strong></td></tr>
+        <tr><td>Royal Canin Large Puppy</td><td><span class="tag tag-prem">Premium</span></td><td>Breed-size specific</td><td>15 кг</td><td style="text-align:right">185</td><td style="text-align:right"><strong>12.33</strong></td></tr>
+        <tr><td>Monge Beef &amp; Rice</td><td><span class="tag tag-prem">Premium</span></td><td>Говядина + рис</td><td>12 кг</td><td style="text-align:right">156</td><td style="text-align:right">13.00</td></tr>
+        <tr><td>Nature's Protection Lamb &amp; Rice</td><td><span class="tag tag-super">Super-Prem</span></td><td>Ягнёнок + рис</td><td>12 кг</td><td style="text-align:right">162</td><td style="text-align:right">13.50</td></tr>
+        <tr><td>Monge BWild Grain Free</td><td><span class="tag tag-super">Super-Prem</span></td><td>Утка / оленина, grain-free</td><td>12 кг</td><td style="text-align:right">226</td><td style="text-align:right"><strong>18.83</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="note" style="margin-top:8px">
+      <strong>Как читать:</strong> малые упаковки 1–2 кг всегда дороже per-kg за счёт фасовки. Базовые массовые SKU premium-брендов (Monge / RC / Pro Plan 12–15 кг) держатся в 11–14 AZN/кг. Супер-премиум grain-free — 18–22 AZN/кг. Holistic / Ultra (Orijen, Acana, Grandorf) — 26+ AZN/кг.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Тренды рынка</h2>
+    <h3 style="color:var(--green);font-size:13px;margin:10px 0 6px">Драйверы роста</h3>
+    <ul>
+      <li><strong>Премиумизация:</strong> super-premium / holistic растёт 10–15% г/г по региону</li>
+      <li><strong>Grain-free + functional:</strong> slash-тренд из Восточной Европы, не насыщен</li>
+      <li><strong>Single-protein / LID</strong> (утка, оленина): экзотические белки как маркер holistic</li>
+      <li><strong>Small-breed формулы:</strong> квартирное содержание в Баку — структурный тренд</li>
+      <li><strong>Online-каналы:</strong> Birmarket + Wolt — растущая часть category trafic</li>
+    </ul>
+
+    <h3 style="color:var(--amber);font-size:13px;margin:14px 0 6px">Незанятые ниши</h3>
+    <ul>
+      <li><strong>Senior-специализация</strong> — слабо во всех тирах кроме Rx</li>
+      <li><strong>Ultra-Premium</strong> — только Orijen; нет Farmina N&amp;D, Taste of the Wild, Wellness Core, Applaws</li>
+      <li><strong>Hill's Prescription Diet</strong> — не подтверждён в публичных каталогах AZ</li>
+      <li><strong>Fresh / frozen / air-dried</strong> — категория отсутствует</li>
+      <li><strong>Локальное производство</strong> — нет ни одного завода</li>
+      <li><strong>Urinary / Joint вне Rx</strong> — пробел между premium и veterinary</li>
+    </ul>
+  </div>
+</section>
+
+<section class="card" style="margin-bottom:16px">
+  <h2>7 продуктовых осей сегментации</h2>
+  <div class="axes-7">
+    <div class="axis"><div class="n">ОСЬ 1</div><h4>Ценовой тир</h4><ul><li>Sub-economy</li><li>Quality Economy</li><li>Mid-range</li><li>Premium</li><li>Super-Premium</li><li>Ultra-Premium</li><li>Veterinary / Rx</li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 2</div><h4>Возраст</h4><ul><li>Puppy / Junior</li><li>Adult 1–7</li><li>Senior 7+ <em>(слабо)</em></li><li>All life stages</li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 3</div><h4>Размер породы</h4><ul><li>Mini &lt;10 кг</li><li>Medium 10–25 кг</li><li>Large 25–45 кг</li><li>Giant 45+</li><li>Breed-specific (RC)</li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 4</div><h4>Функциональное</h4><ul><li>Sensitive / GI</li><li>Hypoallergenic</li><li>Sterilised / weight</li><li>Urinary</li><li>Joint / mobility</li><li>Skin &amp; coat</li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 5</div><h4>Диета / формула</h4><ul><li>Grain-inclusive</li><li>Grain-free <em>(рост)</em></li><li>Single-protein / LID</li><li>High-protein</li><li>Holistic / natural</li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 6</div><h4>Протеин</h4><ul><li>Курица <em>(доминант)</em></li><li>Ягнёнок, говядина</li><li>Лосось / рыба</li><li>Утка, оленина <em>(super-prem)</em></li></ul></div>
+    <div class="axis"><div class="n">ОСЬ 7</div><h4>Формат упаковки</h4><ul><li><strong>На развес</strong> (локально)</li><li>1.5–3 кг — premium / small</li><li>10–15 кг — основной объём</li><li>20 кг — economy / кинологи</li></ul></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+Chart.defaults.font.family = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif';
+Chart.defaults.color = '#5b6478';
+Chart.defaults.borderColor = '#e6e8ef';
+
+new Chart(document.getElementById('priceShare'), {
+  type:'doughnut',
+  data:{
+    labels:['Sub-economy','Quality Economy','Mid-range','Premium','Super-Premium','Ultra','Veterinary'],
+    datasets:[{
+      data:[22,18,22,22,11,2,3],
+      backgroundColor:['#ef4444','#fbbf24','#60a5fa','#a78bfa','#4ade80','#ec4899','#38bdf8'],
+      borderColor:'#fff',borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,cutout:'60%',
+    plugins:{legend:{position:'right',labels:{boxWidth:12,padding:8,font:{size:11.5}}},
+      tooltip:{callbacks:{label:(c)=>` ${c.label}: ${c.parsed}%`}}}
+  }
+});
+
+new Chart(document.getElementById('priceRange'), {
+  type:'bar',
+  data:{
+    labels:['Sub-economy','Quality Eco','Mid-range','Premium','Super-Prem','Ultra','Veterinary'],
+    datasets:[{
+      label:'AZN/кг',
+      data:[[2.5,3.5],[4,6],[8,15],[13,24],[24,35],[35,55],[30,50]],
+      backgroundColor:['#ef4444','#fbbf24','#60a5fa','#a78bfa','#4ade80','#ec4899','#38bdf8'],
+      borderRadius:5,borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{beginAtZero:true,max:60,grid:{color:'#eef0f6'},ticks:{callback:(v)=>v+' ₼'}},y:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>` ${c.raw[0]} – ${c.raw[1]} AZN/кг`}}}
+  }
+});
+
+new Chart(document.getElementById('origin'), {
+  type:'bar',
+  data:{
+    labels:['Италия','Германия','Франция (RC)','США (Purina)','Чехия','Канада','Турция','Россия/СНГ','Бельгия/NL','Литва'],
+    datasets:[{label:'Брендов',data:[5,5,2,2,3,2,8,3,1,1],backgroundColor:'#2563eb',borderRadius:5}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    scales:{y:{beginAtZero:true,grid:{color:'#eef0f6'},ticks:{stepSize:1}},x:{grid:{display:false}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+new Chart(document.getElementById('proteins'), {
+  type:'bar',
+  data:{
+    labels:['Курица','Ягнёнок','Говядина','Рыба / лосось','Индейка','Утка','Оленина / кабан'],
+    datasets:[{label:'Брендов',data:[34,24,20,18,12,7,3],
+      backgroundColor:['#2563eb','#10b981','#d97706','#0ea5e9','#f59e0b','#a855f7','#ef4444'],
+      borderRadius:5}]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    scales:{x:{beginAtZero:true,grid:{color:'#eef0f6'},ticks:{stepSize:5}},y:{grid:{display:false}}},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>` ${c.raw} брендов`}}}
+  }
+});
+</script>
+</body>
+</html>
