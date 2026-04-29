@@ -107,7 +107,7 @@ a:hover{text-decoration:underline}
     </div>
   </div>
   <div id="map"></div>
-  <div class="note">Клик по чипу — toggle. «Все»/«Independent» работают независимо от брендов. Клик по маркеру — детали.</div>
+  <div class="note">Клик по сети — показать только её (solo). Клик по «Все» или повторный клик — вернуть все. Категории работают как обычный toggle.</div>
 </section>
 
 <section class="grid cols-2" style="margin-bottom:16px">
@@ -661,18 +661,6 @@ function renderMarkers() {
   });
 }
 
-const allBrandChips = () => document.querySelectorAll('.chip[data-chain]:not([data-chain="all"])');
-const allChip = () => document.querySelector('.chip[data-chain="all"]');
-
-function syncAllChip() {
-  const all = allChip();
-  if (!all) return;
-  const total = allBrandChips().length;
-  const on = [...allBrandChips()].filter(c => c.classList.contains('on')).length;
-  if (on === total) { all.classList.add('on'); all.classList.remove('off'); }
-  else { all.classList.remove('on'); all.classList.add('off'); }
-}
-
 document.querySelectorAll('.chip[data-cat]').forEach(chip => {
   chip.addEventListener('click', () => {
     const cat = chip.dataset.cat;
@@ -687,27 +675,31 @@ document.querySelectorAll('.chip[data-cat]').forEach(chip => {
   });
 });
 
+function setAllChainsOn() {
+  filterState.chains = new Set(['independent', ...Object.keys(chainColors)]);
+  document.querySelectorAll('.chip[data-chain]').forEach(b => {
+    b.classList.add('on'); b.classList.remove('off');
+  });
+}
+
+function setSoloChain(key) {
+  filterState.chains = new Set([key]);
+  document.querySelectorAll('.chip[data-chain]').forEach(b => {
+    if (b.dataset.chain === key) { b.classList.add('on'); b.classList.remove('off'); }
+    else                          { b.classList.add('off'); b.classList.remove('on'); }
+  });
+}
+
 document.querySelectorAll('.chip[data-chain]').forEach(chip => {
   chip.addEventListener('click', () => {
     const c = chip.dataset.chain;
     if (c === 'all') {
-      const turnOn = chip.classList.contains('off');
-      allBrandChips().forEach(b => {
-        const key = b.dataset.chain;
-        if (turnOn) { filterState.chains.add(key); b.classList.add('on'); b.classList.remove('off'); }
-        else        { filterState.chains.delete(key); b.classList.add('off'); b.classList.remove('on'); }
-      });
-      if (turnOn) { chip.classList.add('on'); chip.classList.remove('off'); }
-      else        { chip.classList.add('off'); chip.classList.remove('on'); }
+      setAllChainsOn();
     } else {
-      if (filterState.chains.has(c)) {
-        filterState.chains.delete(c);
-        chip.classList.add('off'); chip.classList.remove('on');
-      } else {
-        filterState.chains.add(c);
-        chip.classList.add('on'); chip.classList.remove('off');
-      }
-      syncAllChip();
+      // Already solo on this chain → reset to all
+      const isSolo = filterState.chains.size === 1 && filterState.chains.has(c);
+      if (isSolo) setAllChainsOn();
+      else        setSoloChain(c);
     }
     renderMarkers();
   });
